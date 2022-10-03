@@ -10,7 +10,7 @@ token_auth = HTTPTokenAuth()
 def verify_token(token):
     try:
         return token == config.get_env('API_TOKEN')
-    except RuntimeError:
+    except KeyError:
         token_auth_error()
 
 
