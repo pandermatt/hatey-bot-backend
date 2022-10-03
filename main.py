@@ -2,6 +2,7 @@ import pandas as pd
 
 from config import config
 from data_analysis import word_cloud_generator
+from data_model.ethos_data import EthosData
 from data_model.south_park_data import SouthParkData
 from data_model.twitter_data import TwitterData
 
@@ -18,4 +19,14 @@ if __name__ == '__main__':
 
     all_text = ' '.join(data[labels == 1])
     print(word_cloud_generator.generate(all_text, 'twitter_word_cloud_label_1.png'))
+
+    data = EthosData().get_data()
+    labels = EthosData().get_label()
+
+    all_text = ' '.join(data[labels == 0])
+    word_cloud_generator.generate(all_text, 'ethos_word_cloud_label_0.png')
+
+    all_text = ' '.join(data[labels == 1])
+    word_cloud_generator.generate(all_text, 'ethos_word_cloud_label_1.png')
+
 

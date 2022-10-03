@@ -30,6 +30,9 @@ class Config:
     def input_file(self, file_name):
         return join(self.data_dir('input'), file_name)
 
+    def cache_dir(self):
+        return self.data_dir('cache')
+
     def get_env(self, var):
         return self.__get_var(var)
 
