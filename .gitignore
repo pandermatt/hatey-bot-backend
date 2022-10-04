@@ -128,7 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-application.yml
-data/result
-application.yml
-data/cache
+roBERTa_MultLabel_class_model.pt
+
+.idea/workspace.xml
