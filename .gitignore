@@ -135,5 +135,3 @@ data/cache
 
 .idea/*
 *.pt
-
-data/clean_df.csv
