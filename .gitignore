@@ -132,3 +132,8 @@ application.yml
 data/result
 application.yml
 data/cache
+
+.idea/*
+*.pt
+
+data/clean_df.csv
