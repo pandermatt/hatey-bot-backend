@@ -4,15 +4,18 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_restx import Api, Resource
 
+from api import error_handler
 from api.auth import token_auth
 from config import config
 from util.logger import log
 
 app = Flask(__name__)
+app_origins = {"origins": ["http://127.0.0.1:5000", "https://hatey.monster"]}
 CORS(
     app,
     resources={
-        "/auth/": {"origins": ["http://localhost:8080"]},
+        "/auth/": app_origins,
+        "/queries/*": app_origins,
     }
 )
 authorizations = {
@@ -35,6 +38,7 @@ api = Api(app, version='0.0.1', title='HateyBot API',
           )
 
 auth = api.namespace('auth', description='Authentication')
+queries = api.namespace('queries', description='Queries')
 
 
 @auth.route('/')
@@ -42,6 +46,22 @@ class AuthHandler(Resource):
     @token_auth.login_required
     def get(self):
         return 'successful'
+
+
+@queries.route('/')
+@queries.doc(params={'query': 'Query to classify'})
+class QueryList(Resource):
+    @token_auth.login_required
+    def get(self):
+        params = request.args
+        query = params.get('query')
+        if query is None:
+            error_handler.bad_request_response('Query is required')
+        log.info(f'QueryList: {params}')
+        return jsonify(
+            status='success',
+            labels=["hate_speech", "racist", "anti-caucasian", "intelligence discrimating"]
+        )
 
 
 @app.after_request
