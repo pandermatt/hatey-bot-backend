@@ -1,4 +1,9 @@
-flask
+flask==2.1.2
 flask-cors
 flask-restx
+flask-httpauth
 wordcloud
+pandas
+PyYAML
+matplotlib
+werkzeug==2.1.2
