@@ -1,4 +1,10 @@
-# Hatey Bot Backend
+# 🤬🤖 Hatey Bot Backend
+
+## Important Links
+
+- [Frontend](https://github.com/pandermatt/hatey-bot-frontend)
+- [Backend](https://github.com/pandermatt/hatey-bot-backend)
+- [Documentation](https://www.overleaf.com/project/633592679211c2009c8bce96)
 
 ## Development
 
