@@ -1,32 +1,32 @@
-import pandas as pd
+import nltk
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 from config import config
 from data_analysis import word_cloud_generator
+from data_model.dynamic_hate_data import DynamicHateData
 from data_model.ethos_data import EthosData
-from data_model.south_park_data import SouthParkData
-from data_model.twitter_data import TwitterData
+from model.ensemble_classification import EnsembleClassification
+from util.file_io import FileIo
 
 if __name__ == '__main__':
-    data = SouthParkData().get_data()
-    all_text = ' '.join(data)
-    word_cloud_generator.generate(all_text, 'south_park_word_cloud.png')
-
-    data = TwitterData().get_data()
-    labels = TwitterData().get_label()
+    data = DynamicHateData().get_data()
+    labels = DynamicHateData().get_label()
 
     all_text = ' '.join(data[labels == 0])
-    word_cloud_generator.generate(all_text, 'twitter_word_cloud_label_0.png')
+    word_cloud_generator.generate(all_text, 'dynamic_hate_data_non_hate.png')
 
     all_text = ' '.join(data[labels == 1])
-    print(word_cloud_generator.generate(all_text, 'twitter_word_cloud_label_1.png'))
+    word_cloud_generator.generate(all_text, 'dynamic_hate_data_hate.png')
 
-    data = EthosData().get_data()
-    labels = EthosData().get_label()
+    model = EnsembleClassification()
+    model.train(data, labels)
 
-    all_text = ' '.join(data[labels == 0])
-    word_cloud_generator.generate(all_text, 'ethos_word_cloud_label_0.png')
+    FileIo.save_model('dynamic_hate_data_model', model)
 
-    all_text = ' '.join(data[labels == 1])
-    word_cloud_generator.generate(all_text, 'ethos_word_cloud_label_1.png')
+    print(model.classification_report())
+    print(model.confusion_matrix())
 
-
+    loaded_model = FileIo.load_model('dynamic_hate_data_model')
+    X = ['I hate you', 'I love you']
+    Y = loaded_model.predict(X)
+    print(Y)
