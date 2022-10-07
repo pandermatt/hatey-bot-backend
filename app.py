@@ -6,7 +6,6 @@ from flask_restx import Api, Resource
 
 from api import error_handler
 from api.auth import token_auth
-from config import config
 from util.logger import log
 
 app = Flask(__name__)
@@ -26,15 +25,11 @@ authorizations = {
     },
 }
 
-swagger_ui_enabled = '/'
-if config.get_env('PRODUCTION') == 'Y':
-    swagger_ui_enabled = False
-
 api = Api(app, version='0.0.1', title='HateyBot API',
           description='API for HateyBot',
           security='Bearer Auth',
           authorizations=authorizations,
-          doc=swagger_ui_enabled
+          doc='/'
           )
 
 auth = api.namespace('auth', description='Authentication')
