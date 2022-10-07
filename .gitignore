@@ -132,3 +132,6 @@ application.yml
 data/result
 application.yml
 data/cache
+
+.idea/*
+*.pt
