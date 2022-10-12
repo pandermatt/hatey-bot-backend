@@ -8,6 +8,8 @@ numpy
 pandas
 scikit-learn
 sklearn
+slackclient
+slackeventsapi
 waitress
 werkzeug==2.1.2
 wordcloud

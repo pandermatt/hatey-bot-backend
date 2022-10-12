@@ -1,2 +1,4 @@
 API_TOKEN: "1234567890"
 FRONTEND_URL: "https://hatey.monster" # or "http://localhost:3000"
+SLACK_BOT_TOKEN: "xxxx"
+SLACK_SIGNING_SECRET: "yyyy"
