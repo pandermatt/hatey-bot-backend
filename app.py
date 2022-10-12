@@ -6,10 +6,11 @@ from flask_restx import Api, Resource
 
 from api import error_handler
 from api.auth import token_auth
+from config import config
 from util.logger import log
 
 app = Flask(__name__)
-app_origins = {"origins": ["http://127.0.0.1:5000", "https://hatey.monster"]}
+app_origins = {"origins": config.get_env("FRONTEND_URL")}
 CORS(
     app,
     resources={
