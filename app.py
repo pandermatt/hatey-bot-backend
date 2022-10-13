@@ -1,9 +1,11 @@
 import traceback
 
+from random import randint
+from slack import WebClient
+from slackeventsapi import SlackEventAdapter
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_restx import Api, Resource
-
 from api import error_handler
 from api.auth import token_auth
 from config import config
@@ -33,6 +35,10 @@ api = Api(app, version='0.0.1', title='HateyBot API',
           doc='/'
           )
 
+slack_client = WebClient(token=config.get_env('SLACK_BOT_TOKEN'))
+slack_adapter = SlackEventAdapter(config.get_env('SLACK_SIGNING_SECRET'), '/slack/events', app)
+slack_bot_id = slack_client.api_call("auth.test")["user_id"]
+
 auth = api.namespace('auth', description='Authentication')
 queries = api.namespace('queries', description='Queries')
 
@@ -59,6 +65,19 @@ class QueryList(Resource):
             labels=["hate_speech", "racist", "anti-caucasian", "intelligence discrimating"]
         )
 
+@slack_adapter.on('message')
+def message(payload):
+    event = payload.get('event', {})
+    channel_id = event.get('channel')
+    user_id = event.get('user')
+    text = event.get('text')
+
+    if slack_bot_id != user_id:
+        if is_hate_spech(text):
+            slack_client.chat_postMessage(channel=channel_id, text="Your message has been flagged as hate speech. Please refrain from using such language in the future.")
+
+def is_hate_spech(text):
+    return randint(1,2) == 1
 
 @app.after_request
 def after_request(response):
