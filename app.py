@@ -65,6 +65,7 @@ class QueryList(Resource):
             labels=["hate_speech", "racist", "anti-caucasian", "intelligence discrimating"]
         )
 
+
 @slack_adapter.on('message')
 def message(payload):
     event = payload.get('event', {})
@@ -74,10 +75,13 @@ def message(payload):
 
     if slack_bot_id != user_id:
         if is_hate_spech(text):
-            slack_client.chat_postMessage(channel=channel_id, text="Your message has been flagged as hate speech. Please refrain from using such language in the future.")
+            slack_client.chat_postMessage(channel=channel_id,
+                                          text="Your message has been flagged as hate speech. Please refrain from using such language in the future.")
+
 
 def is_hate_spech(text):
-    return randint(1,2) == 1
+    return randint(1, 2) == 1
+
 
 @app.after_request
 def after_request(response):
