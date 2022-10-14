@@ -1,32 +1,43 @@
-import nltk
-from sklearn.feature_extraction.text import TfidfVectorizer
+import numpy as np
+import pandas as pd
 
 from config import config
 from data_analysis import word_cloud_generator
-from data_model.dynamic_hate_data import DynamicHateData
-from data_model.ethos_data import EthosData
+from data_model.toxic_comment_data import ToxicCommentData
 from model.ensemble_classification import EnsembleClassification
+from model.spacy_tokenizer import SpacyTokenizer
 from util.file_io import FileIo
+from util.output_writer import OutputWriter
 
 if __name__ == '__main__':
-    data = DynamicHateData().get_data()
-    labels = DynamicHateData().get_label()
+    dataset = ToxicCommentData()
+    data = dataset.get_data()
+    labels = dataset.get_label()
 
-    all_text = ' '.join(data[labels == 0])
-    word_cloud_generator.generate(all_text, 'dynamic_hate_data_non_hate.png')
+    tokenizer = SpacyTokenizer()
+    data = data.apply(tokenizer)
 
-    all_text = ' '.join(data[labels == 1])
-    word_cloud_generator.generate(all_text, 'dynamic_hate_data_hate.png')
+    for i in range(7):
+        print(f'Label {i}: {len(labels[labels == i])}')
+        all_words = ' '.join(data[labels == i].apply(lambda x: ' '.join(x)))
+        word_cloud_generator.generate(all_words, f'label_{i}.png')
 
     model = EnsembleClassification()
     model.train(data, labels)
 
-    FileIo.save_model('dynamic_hate_data_model', model)
+    FileIo.save_model('model', model)
+    FileIo.save_model('tokenizer', tokenizer)
 
     print(model.classification_report())
     print(model.confusion_matrix())
 
-    loaded_model = FileIo.load_model('dynamic_hate_data_model')
-    X = ['I hate you', 'I love you']
-    Y = loaded_model.predict(X)
-    print(Y)
+    test_csv = pd.read_csv(config.input_file('toxic_comment_verify.csv'))
+    X = test_csv['comment_text'].apply(tokenizer)
+    ids = test_csv['id']
+
+    loaded_model = FileIo.load_model('model')
+    loaded_tokenizer = FileIo.load_model('tokenizer')
+    Y = loaded_model.predict_with_probability(X)
+    print(np.argmax(Y, axis=1))
+
+    OutputWriter('submission.csv').write(ids, Y)
