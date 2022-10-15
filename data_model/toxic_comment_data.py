@@ -16,7 +16,7 @@ class ToxicCommentData(AbstractData):
         data.loc[data['threat'] == 1, 'label'] = 4
         data.loc[data['insult'] == 1, 'label'] = 5
         data.loc[data['identity_hate'] == 1, 'label'] = 6
-        data = data.sample(frac=1).groupby('label').head(10000)
+        data = data.groupby('label').head(10000)
         return data
 
     def get_data(self):

@@ -1,20 +1,21 @@
 import numpy as np
-from matplotlib import pyplot as plt
 import seaborn as sns
-from sklearn.ensemble import GradientBoostingClassifier
+from keras.layers import Dense, Dropout
+from keras.models import Sequential
+from matplotlib import pyplot as plt
+from sklearn.ensemble import RandomForestClassifier, BaggingClassifier, ExtraTreesClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
+import tensorflow as tf
 
 from config import config
 
 
 class EnsembleClassification:
     def __init__(self):
-        self.classifier = GradientBoostingClassifier()
-        self.tfidf_vectorizer = TfidfVectorizer(analyzer='word',
-                                                tokenizer=(lambda x: x),
-                                                preprocessor=(lambda x: x))
+        self.tfidf_vectorizer = TfidfVectorizer(tokenizer=lambda x: x, lowercase=False)
+        self.classifier = ExtraTreesClassifier()
 
     def train(self, X, Y):
         x_tfidf = self.tfidf_vectorizer.fit_transform(X)
@@ -22,6 +23,7 @@ class EnsembleClassification:
                                                                                 test_size=0.2,
                                                                                 random_state=42,
                                                                                 stratify=Y)
+
         self.classifier.fit(self.X_train, self.y_train)
 
     def predict(self, text):
@@ -35,7 +37,7 @@ class EnsembleClassification:
     def classification_report(self):
         return classification_report(self.y_test, self.classifier.predict(self.X_test))
 
-    def confusion_matrix(self):
+    def confusion_matrix(self, labels=None):
         cm = confusion_matrix(self.y_test, self.classifier.predict(self.X_test))
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
@@ -44,6 +46,9 @@ class EnsembleClassification:
         sns.heatmap(cm, annot=True, fmt='.2f', cmap='Blues')
         plt.xlabel('Predicted')
         plt.ylabel('Truth')
+        if labels is not None:
+            plt.xticks(np.arange(len(labels)), labels)
+            plt.yticks(np.arange(len(labels)), labels)
         plt.savefig(config.result_file('confusion_matrix.png'))
 
         return cm

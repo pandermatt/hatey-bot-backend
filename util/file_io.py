@@ -9,7 +9,7 @@ from util.logger import log
 
 class FileIo:
     @staticmethod
-    def load_model(file_name: str):
+    def load_obj(file_name: str):
         pickle_path = os.path.join(config.cache_dir(), file_name)
         log.info(f"Loading {file_name}")
 
@@ -20,8 +20,20 @@ class FileIo:
             return dill.load(handle)
 
     @staticmethod
-    def save_model(file_name: str, obj):
+    def save_obj(file_name: str, obj):
         log.info(f"Creating {file_name}")
         pickle_path = os.path.join(config.cache_dir(), file_name)
         with open(pickle_path, 'wb') as handle:
             dill.dump(obj, handle)
+
+    @staticmethod
+    def cached(file_name: str, func: Callable):
+        def wrapper(*args, **kwargs):
+            try:
+                return FileIo.load_obj(file_name)
+            except FileNotFoundError:
+                result = func(*args, **kwargs)
+                FileIo.save_obj(file_name, result)
+                return result
+
+        return wrapper
