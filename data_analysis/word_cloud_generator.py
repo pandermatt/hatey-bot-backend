@@ -7,7 +7,7 @@ from config import config
 
 
 def generate(corpus, file_name):
-    wordcloud = WordCloud(width=1600, height=800, background_color="white").generate(corpus)
+    wordcloud = WordCloud(width=1600, height=800, background_color="white", collocations=False).generate(corpus)
     plt.figure(figsize=(20, 10))
     plt.imshow(wordcloud, interpolation="bilinear")
     plt.axis("off")
