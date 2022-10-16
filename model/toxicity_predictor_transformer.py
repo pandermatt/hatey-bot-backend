@@ -13,7 +13,6 @@ class ToxicityPredictorTransformer:
 
     def predict(self, sentence):
         prediction = self.model.predict(sentence)
-        print(prediction)
         prediction['clean'] = 0
         clean = True
         for key in prediction.keys():

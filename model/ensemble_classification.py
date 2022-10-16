@@ -5,6 +5,7 @@ from keras.models import Sequential
 from matplotlib import pyplot as plt
 from sklearn.ensemble import RandomForestClassifier, BaggingClassifier, ExtraTreesClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import RidgeClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
@@ -15,7 +16,10 @@ from config import config
 class EnsembleClassification:
     def __init__(self):
         self.tfidf_vectorizer = TfidfVectorizer(tokenizer=lambda x: x, lowercase=False)
-        self.classifier = ExtraTreesClassifier()
+        # self.classifier = ExtraTreesClassifier()
+        # self.classifier = RandomForestClassifier()
+        self.classifier = BaggingClassifier(base_estimator=ExtraTreesClassifier(), n_estimators=10, max_samples=0.5,
+                                            max_features=0.5)
 
     def train(self, X, Y):
         x_tfidf = self.tfidf_vectorizer.fit_transform(X)
