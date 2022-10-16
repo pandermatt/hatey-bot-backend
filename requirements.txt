@@ -1,6 +1,7 @@
 PyYAML
 click==8.0.4
 datasets
+detoxify
 dill
 flask-cors
 flask-httpauth
