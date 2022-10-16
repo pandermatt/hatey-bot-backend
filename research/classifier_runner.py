@@ -24,8 +24,8 @@ if __name__ == '__main__':
 
     for i in range(7):
         print(f'Label {i}: {len(X[Y == i])}')
-        all_words = [text for subtext in X[Y == i] for text in subtext]
-        word_cloud_generator.generate(' '.join(all_words), f'label_{label_names[i]}.png')
+    #     all_words = [text for subtext in X[Y == i] for text in subtext]
+    #     word_cloud_generator.generate(' '.join(all_words), f'label_{label_names[i]}.png')
 
     model = EnsembleClassification()
     model.train(X, Y)
@@ -33,8 +33,8 @@ if __name__ == '__main__':
     FileIo.save_obj('model', model)
     FileIo.save_obj('tokenizer', tokenizer)
 
-    print(model.classification_report())
-    print(model.confusion_matrix(labels=label_names))
+    # print(model.classification_report())
+    # print(model.confusion_matrix(labels=label_names))
 
     loaded_model = FileIo.load_obj('model')
     loaded_tokenizer = FileIo.load_obj('tokenizer')
@@ -42,7 +42,9 @@ if __name__ == '__main__':
     test_csv = pd.read_csv(config.input_file('toxic_comment_verify.csv'))
 
     X = cached_tokens(test_csv['comment_text'].to_numpy())
-    Y = loaded_model.predict_with_probability(X)
+    # Y = loaded_model.predict_with_probability(X)
+    Y = loaded_model.predict(X)
+    print(Y)
     print(np.argmax(Y, axis=1))
 
     ids = test_csv['id']
