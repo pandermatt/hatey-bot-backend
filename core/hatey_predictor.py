@@ -39,7 +39,10 @@ class HateyPredictor:
 
     def reasons(self, text):
         reasons = self.transformer_model.reasons(text)
-        return ", ".join([stringcase.sentencecase(reason) for reason in reasons])
+        return [stringcase.sentencecase(reason) for reason in reasons]
+
+    def reasons_as_text(self, text):
+        return ", ".join(self.reasons(text))
 
     def problematic_words(self, text):
         return [word for word in self.transformer_model.problematic_words(text)]
@@ -53,6 +56,13 @@ class HateyPredictor:
             result[name] = self.clean(classifier.predict_one_with_labels(tokens))
 
         return result
+
+    def sentiment(self, text):
+        return self.clean({
+            "negative": 0.5,
+            "neutral": 0.5,
+            "positive": 0.5
+        })
 
     def is_hate_speech(self, text):
         return not self.transformer_model.is_sentence_clean(text)
