@@ -6,7 +6,7 @@ class TwitterData(AbstractData):
     FILE_NAME = 'labeled_data.csv'
 
     def get_data(self):
-        return self.data['tweet']
+        return self.data['tweet'].to_numpy()
 
     def get_label(self):
-        return self.data['hate_speech']
+        return self.data['hate_speech'].to_numpy()

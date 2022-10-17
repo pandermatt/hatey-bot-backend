@@ -2,6 +2,7 @@ from data_model.abstract_data import AbstractData
 from datasets import load_dataset
 
 
+# Source: https://huggingface.co/datasets/hate_speech18
 class HateSpeech18Data(AbstractData):
     FILE_NAME = None
     FILE_URL = None
@@ -14,7 +15,14 @@ class HateSpeech18Data(AbstractData):
         return data['train'].to_pandas()
 
     def get_data(self):
-        return self.data['text']
+        return self.data['text'].to_numpy()
 
     def get_label(self):
-        return self.data['label']
+        return self.data['label'].to_numpy()
+
+    # hate
+    # noHate
+    # relation (doesn't contain hate speech on their own, but combination of serveral sentences does)
+    # idk/skip (not written in English or not sure)
+    def get_label_names(self):
+        return ['hate', 'noHate', 'relation', 'skip']

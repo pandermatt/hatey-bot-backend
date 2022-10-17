@@ -12,7 +12,11 @@ class EthosData(AbstractData):
         return pd.read_csv(file, sep=';')
 
     def get_data(self):
-        return self.data['comment']
+        return self.data['comment'].to_numpy()
 
     def get_label(self):
-        return self.data['isHate']
+        threshold = 0.5
+        return self.data['isHate'].apply(lambda x: 1 if x > threshold else 0).to_numpy()
+
+    def get_label_names(self):
+        return ['non-hate', 'hate']

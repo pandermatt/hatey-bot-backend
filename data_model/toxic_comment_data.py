@@ -20,7 +20,7 @@ class ToxicCommentData(AbstractData):
         return data
 
     def get_data(self):
-        return self.data['comment_text']
+        return self.data['comment_text'].to_numpy()
 
     # 0 - non-toxic
     # 1 - toxic
@@ -30,7 +30,7 @@ class ToxicCommentData(AbstractData):
     # 5 - insult
     # 6 - identity hate
     def get_label(self):
-        return self.data['label']
+        return self.data['label'].to_numpy()
 
     def get_label_names(self):
         return ['non-toxic', 'toxic', 'severe toxic', 'obscene', 'threat', 'insult', 'identity hate']
