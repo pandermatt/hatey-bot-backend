@@ -1,3 +1,4 @@
+import nltk
 import numpy as np
 import spacy
 from nltk import PorterStemmer, WordNetLemmatizer, word_tokenize
@@ -16,11 +17,15 @@ class SpacyTokenizer:
 
 
 class NltkTokenizer:
-    def __init__(self, remove_repeted_ngrams=True):
+    def __init__(self, remove_repeated_ngrams=True):
+        nltk.download('stopwords', quiet=True)
+        nltk.download('wordnet', quiet=True)
+        nltk.download('omw-1.4', quiet=True)
+
         self.stemmer = PorterStemmer()
         self.lemmatizer = WordNetLemmatizer()
         self.stop_words = set(stopwords.words('english'))
-        self.remove_repeted_ngrams = remove_repeted_ngrams
+        self.remove_repeated_ngrams = remove_repeated_ngrams
 
     def tokenize(self, texts):
         return np.array([self._tokenize(text) for text in texts])
@@ -29,7 +34,7 @@ class NltkTokenizer:
         words = word_tokenize(text)
         words = [word for word in words if word.isalpha() and word not in self.stop_words]
         words = [self.lemmatizer.lemmatize(word).lower() for word in words]
-        if self.remove_repeted_ngrams:
+        if self.remove_repeated_ngrams:
             words = [word for i, word in enumerate(words) if i < 2 or (word != words[i - 2] and word != words[i - 1])]
 
         return words
