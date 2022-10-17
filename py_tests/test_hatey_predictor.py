@@ -6,9 +6,14 @@ def test_is_hate_speech():
     assert not hatey_predictor_singleton.is_hate_speech("You are a nice person")
 
 
+def test_reasons_as_text():
+    assert hatey_predictor_singleton.reasons_as_text("You are a stupid") == "Toxicity, Obscene, Insult"
+    assert hatey_predictor_singleton.reasons_as_text("You are a nice person") == ""
+
+
 def test_reasons():
-    assert hatey_predictor_singleton.reasons("You are a stupid") == "Toxicity, Obscene, Insult"
-    assert hatey_predictor_singleton.reasons("You are a nice person") == ""
+    assert hatey_predictor_singleton.reasons("You are a stupid") == ["Toxicity", "Obscene", "Insult"]
+    assert hatey_predictor_singleton.reasons("You are a nice person") == []
 
 
 def test_problematic_words():

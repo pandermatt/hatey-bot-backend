@@ -69,6 +69,7 @@ class QueryList(Resource):
         try:
             return jsonify(
                 predictions=hatey_predictor_singleton.predictions(query),
+                sentiment=hatey_predictor_singleton.sentiment(query),
                 is_hate_speech=hatey_predictor_singleton.is_hate_speech(query),
                 problematic_words=hatey_predictor_singleton.problematic_words(query),
                 reasons=hatey_predictor_singleton.reasons(query)
@@ -91,7 +92,7 @@ if SLACK_INTEGRATION_ENABLED:
 
         if hatey_predictor_singleton.is_hate_speech(text):
             text = f"Hey <@{user_id}>! I think your message is hate speech " \
-                   f"[{hatey_predictor_singleton.reasons(text)}]. " \
+                   f"[{hatey_predictor_singleton.reasons_as_text(text)}]. " \
                    f"Please use more appropriate language."
             log.info(f"Sending message to channel {channel_id}: {text}")
 
