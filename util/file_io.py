@@ -14,7 +14,7 @@ class FileIo:
         log.info(f"Loading {file_name}")
 
         if not os.path.exists(pickle_path):
-            raise FileNotFoundError(f"File not found: {file_name}")
+            raise FileNotFoundError(f"File not found: {file_name} at {pickle_path}")
 
         with open(pickle_path, 'rb') as handle:
             return dill.load(handle)
@@ -32,6 +32,7 @@ class FileIo:
             try:
                 return FileIo.load_obj(file_name)
             except FileNotFoundError:
+                log.info(f"File not found: {file_name}, generating...")
                 result = func(*args, **kwargs)
                 FileIo.save_obj(file_name, result)
                 return result
