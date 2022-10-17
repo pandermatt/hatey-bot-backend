@@ -1,4 +1,4 @@
-from sklearn.ensemble import BaggingClassifier, ExtraTreesClassifier
+import stringcase as stringcase
 
 from core.model_trainer import generate_and_train_model
 from model.toxicity_predictor_transformer import ToxicityPredictorTransformer
@@ -7,6 +7,10 @@ from util.logger import log
 
 
 class HateyPredictor:
+    """
+    This class is a wrapper for the toxicity predictor and the ensemble classifier.
+    """
+
     def __init__(self):
         log.info("Initializing HateyPredictor...")
         self.transformer_model = ToxicityPredictorTransformer()
@@ -16,22 +20,25 @@ class HateyPredictor:
         log.info("HateyPredictor initialized.")
 
     def reasons(self, text):
-        reasons = self.transformer_model.predict(text)
-        reasons = [key for key, value in reasons.items() if value == 1]
-        return ', '.join(reasons)
+        reasons = self.transformer_model.reasons(text)
+        return ", ".join([stringcase.sentencecase(reason) for reason in reasons])
+
+    def problematic_words(self, text):
+        return [stringcase.sentencecase(word) for word in self.transformer_model.problematic_words(text)]
 
     def predictions(self, text):
         tokens = self.ensemble_tokenizer.tokenize([text])
+
         return {
-            'transformer': self.transformer_model.predict(text),
-            'ensemble': self.ensemble_classifier.predict_one_with_labels(tokens)
+            'Transformer': self.clean(self.transformer_model.predict(text)),
+            'Classifier': self.clean(self.ensemble_classifier.predict_one_with_labels(tokens))
         }
 
     def is_hate_speech(self, text):
         return not self.transformer_model.is_sentence_clean(text)
 
+    def clean(self, param):
+        return {stringcase.sentencecase(key): str(value) for key, value in param.items()}
+
 
 hatey_predictor_singleton = HateyPredictor()
-
-if __name__ == '__main__':
-    print(hatey_predictor_singleton.predictions('I hate all of you.'))

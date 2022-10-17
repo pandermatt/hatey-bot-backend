@@ -1,8 +1,11 @@
-# Output writer for Toxic Comment Classification Challenge
 from config import config
 
 
 class OutputWriter:
+    """
+    Output writer for Toxic Comment Classification Challenge
+    """
+
     def __init__(self, filename):
         self.file = open(config.result_file(filename), 'w')
 

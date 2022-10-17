@@ -1,16 +1,15 @@
 import traceback
 
-from random import randint
-from slack import WebClient
-from slackeventsapi import SlackEventAdapter
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_restx import Api, Resource
+from slack import WebClient
+from slackeventsapi import SlackEventAdapter
+
 from api import error_handler
 from api.auth import token_auth
 from config import config
-from core.hatey_adapter import hatey_predictor_singleton
-from model.toxicity_predictor_transformer import toxicity_predictor_transformer_singleton
+from core.hatey_predictor import hatey_predictor_singleton
 from util.logger import log
 
 app = Flask(__name__)
@@ -62,11 +61,13 @@ class QueryList(Resource):
         if query is None:
             error_handler.bad_request_response('Query is required')
         log.info(f'QueryList: {params}')
-        # check if error occured
+
         try:
             return jsonify(
                 predictions=hatey_predictor_singleton.predictions(query),
-                is_hate_speech=hatey_predictor_singleton.is_hate_speech(query)
+                is_hate_speech=hatey_predictor_singleton.is_hate_speech(query),
+                problematic_words=hatey_predictor_singleton.problematic_words(query),
+                reasons=hatey_predictor_singleton.reasons(query)
             )
         except Exception as e:
             log.error(e)
