@@ -24,7 +24,7 @@ class HateyPredictor:
         return ", ".join([stringcase.sentencecase(reason) for reason in reasons])
 
     def problematic_words(self, text):
-        return [stringcase.sentencecase(word) for word in self.transformer_model.problematic_words(text)]
+        return [word for word in self.transformer_model.problematic_words(text)]
 
     def predictions(self, text):
         tokens = self.ensemble_tokenizer.tokenize([text])

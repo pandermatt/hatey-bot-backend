@@ -16,11 +16,11 @@ def test_reasons():
 
 
 def test_problematic_words():
-    assert hatey_predictor.problematic_words("You are an idiot") == ['Idiot']
+    assert hatey_predictor.problematic_words("You are an idiot") == ['idiot']
     assert hatey_predictor.problematic_words("You are a nice person") == []
 
 
 def test_predictions():
     predictions = hatey_predictor.predictions("You are an idiot")
-    assert predictions['Transformer']['Insult'] > 0.5
-    assert predictions['Classifier']['Insult'] > 0.5
+    assert float(predictions['Transformer']['Insult']) > 0.5
+    assert float(predictions['Classifier']['Insult']) > 0.5
