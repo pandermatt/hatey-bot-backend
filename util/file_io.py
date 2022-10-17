@@ -32,6 +32,10 @@ class FileIo:
             try:
                 return FileIo.load_obj(file_name)
             except FileNotFoundError:
+                if not config.get_env('CAN_GENERATE_FILES'):
+                    raise FileNotFoundError(f"File not found: {file_name}, please set CAN_GENERATE_FILES to True or "
+                                            f"upload the file to the {config.cache_dir()} directory.")
+
                 log.info(f"File not found: {file_name}, generating...")
                 result = func(*args, **kwargs)
                 FileIo.save_obj(file_name, result)
