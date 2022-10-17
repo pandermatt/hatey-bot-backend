@@ -1,25 +1,27 @@
 import numpy as np
 import seaborn as sns
-from keras.layers import Dense, Dropout
-from keras.models import Sequential
+import stringcase
 from matplotlib import pyplot as plt
-from sklearn.ensemble import RandomForestClassifier, BaggingClassifier, ExtraTreesClassifier
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import RidgeClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
-import tensorflow as tf
 
 from config import config
 
 
-class EnsembleClassification:
-    def __init__(self):
+class EnsembleClassifier:
+    def __init__(self, classifier=ExtraTreesClassifier(), label_names=None):
+        """
+        :param classifier: classifier to use
+        - ExtraTreesClassifier
+        - BaggingClassifier
+        - RandomForestClassifier
+        - etc.
+        """
         self.tfidf_vectorizer = TfidfVectorizer(tokenizer=lambda x: x, lowercase=False)
-        # self.classifier = ExtraTreesClassifier()
-        # self.classifier = RandomForestClassifier()
-        self.classifier = BaggingClassifier(base_estimator=ExtraTreesClassifier(), n_estimators=10, max_samples=0.5,
-                                            max_features=0.5)
+        self.classifier = classifier
+        self.label_names = label_names
 
     def train(self, X, Y):
         x_tfidf = self.tfidf_vectorizer.fit_transform(X)
@@ -38,6 +40,13 @@ class EnsembleClassification:
         X = self.tfidf_vectorizer.transform(text)
         return self.classifier.predict_proba(X)
 
+    def predict_one_with_labels(self, text):
+        proba = self.predict_with_probability(text)[0]
+        return {label: proba[i] for i, label in enumerate(self.label_names)}
+
+    def get_label_names(self):
+        return self.label_names
+
     def classification_report(self):
         return classification_report(self.y_test, self.classifier.predict(self.X_test))
 
@@ -53,6 +62,8 @@ class EnsembleClassification:
         if labels is not None:
             plt.xticks(np.arange(len(labels)), labels)
             plt.yticks(np.arange(len(labels)), labels)
-        plt.savefig(config.result_file('confusion_matrix.png'))
+        plt.savefig(
+            config.result_file(f'confusion_matrix_{stringcase.snakecase(self.classifier.__class__.__name__)}.png')
+        )
 
         return cm

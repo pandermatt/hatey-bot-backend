@@ -13,6 +13,7 @@ numpy
 pandas
 scikit-learn
 seaborn
+stringcase
 sklearn
 slackclient
 slackeventsapi

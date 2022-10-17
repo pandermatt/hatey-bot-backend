@@ -1,4 +1,8 @@
 API_TOKEN: "1234567890"
 FRONTEND_URL: "https://hatey.monster" # or "http://localhost:3000"
-SLACK_BOT_TOKEN: "xxxx"
-SLACK_SIGNING_SECRET: "yyyy"
+
+# Slack integration is disabled if this is empty
+SLACK_BOT_TOKEN: ""
+SLACK_SIGNING_SECRET: ""
+
+CAN_GENERATE_FILES: "true"
