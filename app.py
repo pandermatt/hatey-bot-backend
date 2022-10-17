@@ -36,9 +36,13 @@ api = Api(app, version='0.0.1', title='HateyBot API',
           doc='/'
           )
 
-slack_client = WebClient(token=config.get_env('SLACK_BOT_TOKEN'))
-slack_adapter = SlackEventAdapter(config.get_env('SLACK_SIGNING_SECRET'), '/slack/events', app)
-slack_bot_id = slack_client.api_call("auth.test")["user_id"]
+SLACK_INTEGRATION_ENABLED = config.get_env("SLACK_BOT_TOKEN") and config.get_env("SLACK_SIGNING_SECRET")
+if SLACK_INTEGRATION_ENABLED:
+    slack_client = WebClient(token=config.get_env('SLACK_BOT_TOKEN'))
+    slack_adapter = SlackEventAdapter(config.get_env('SLACK_SIGNING_SECRET'), '/slack/events', app)
+    slack_bot_id = slack_client.api_call("auth.test")["user_id"]
+else:
+    log.warning("SLACK_BOT_TOKEN or SLACK_SIGNING_SECRET not set, Slack integration disabled")
 
 auth = api.namespace('auth', description='Authentication')
 queries = api.namespace('queries', description='Queries')
@@ -74,23 +78,24 @@ class QueryList(Resource):
             return jsonify(status='error')
 
 
-@slack_adapter.on('message')
-def message(payload):
-    event = payload.get('event', {})
-    channel_id = event.get('channel')
-    user_id = event.get('user')
-    text = event.get('text')
+if SLACK_INTEGRATION_ENABLED:
+    @slack_adapter.on('message')
+    def message(payload):
+        event = payload.get('event', {})
+        channel_id = event.get('channel')
+        user_id = event.get('user')
+        text = event.get('text')
 
-    if slack_bot_id == user_id:
-        return
+        if slack_bot_id == user_id:
+            return
 
-    if hatey_predictor_singleton.is_hate_speech(text):
-        text = f"Hey <@{user_id}>! I think your message is hate speech " \
-               f"[{hatey_predictor_singleton.reasons(text)}]. " \
-               f"Please use more appropriate language."
-        log.info(f"Sending message to channel {channel_id}: {text}")
+        if hatey_predictor_singleton.is_hate_speech(text):
+            text = f"Hey <@{user_id}>! I think your message is hate speech " \
+                   f"[{hatey_predictor_singleton.reasons(text)}]. " \
+                   f"Please use more appropriate language."
+            log.info(f"Sending message to channel {channel_id}: {text}")
 
-        slack_client.chat_postMessage(channel=channel_id, text=text)
+            slack_client.chat_postMessage(channel=channel_id, text=text)
 
 
 @app.after_request

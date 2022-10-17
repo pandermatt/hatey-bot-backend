@@ -20,9 +20,11 @@ class HateSpeech18Data(AbstractData):
     def get_label(self):
         return self.data['label'].to_numpy()
 
-    # hate
-    # noHate
-    # relation (doesn't contain hate speech on their own, but combination of serveral sentences does)
-    # idk/skip (not written in English or not sure)
     def get_label_names(self):
+        """
+        0 - hate
+        1 - noHate
+        2 - relation (doesn't contain hate speech on their own, but combination of serveral sentences does)
+        3 - idk/skip (not written in English or not sure)
+        """
         return ['hate', 'noHate', 'relation', 'skip']
