@@ -20,6 +20,7 @@ class NltkTokenizer:
     def __init__(self, remove_repeated_ngrams=True):
         nltk.download('stopwords', quiet=True)
         nltk.download('wordnet', quiet=True)
+        nltk.download('punkt', quiet=True)
         nltk.download('omw-1.4', quiet=True)
 
         self.stemmer = PorterStemmer()
