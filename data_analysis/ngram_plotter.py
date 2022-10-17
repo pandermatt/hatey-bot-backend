@@ -22,6 +22,5 @@ class NgramPlotter:
         fig, ax = plt.subplots(figsize=(10, 10))
         all_plot = sns.barplot(x=all_fdist.index, y=all_fdist.values, ax=ax)
         plt.xticks(rotation=90)
-        # only use integer for y axis
         ax.get_yaxis().set_major_locator(plt.MaxNLocator(integer=True))
         fig.savefig(config.result_file(filename), bbox_inches='tight')
