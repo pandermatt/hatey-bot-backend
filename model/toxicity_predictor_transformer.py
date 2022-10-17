@@ -13,7 +13,6 @@ class ToxicityPredictorTransformer:
 
     def predict(self, sentence):
         prediction = self.model.predict(sentence)
-        prediction['clean'] = 0
         clean = True
         for key in prediction.keys():
             if prediction[key] > self.threshold:
@@ -21,16 +20,9 @@ class ToxicityPredictorTransformer:
                 clean = False
             else:
                 prediction[key] = 0
-        if clean:
-            prediction['clean'] = 1
+        prediction['clean'] = 1 if clean else 0
         return prediction
 
-    def apply_filter(self, prediction):
-        for key in self.filter_setting:
-            if prediction[key] == 1:
-                return False
-        return True
-
-    def is_this_sentence_clean(self, sentence):
+    def is_sentence_clean(self, sentence):
         prediction = self.predict(sentence)
-        return self.apply_filter(prediction)
+        return prediction['clean'] == 1

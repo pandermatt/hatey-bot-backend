@@ -9,6 +9,8 @@ from flask_restx import Api, Resource
 from api import error_handler
 from api.auth import token_auth
 from config import config
+from core.hatey_adapter import hatey_predictor_singleton
+from model.toxicity_predictor_transformer import toxicity_predictor_transformer_singleton
 from util.logger import log
 
 app = Flask(__name__)
@@ -60,10 +62,15 @@ class QueryList(Resource):
         if query is None:
             error_handler.bad_request_response('Query is required')
         log.info(f'QueryList: {params}')
-        return jsonify(
-            status='success',
-            labels=["hate_speech", "racist", "anti-caucasian", "intelligence discrimating"]
-        )
+        # check if error occured
+        try:
+            return jsonify(
+                predictions=hatey_predictor_singleton.predictions(query),
+                is_hate_speech=hatey_predictor_singleton.is_hate_speech(query)
+            )
+        except Exception as e:
+            log.error(e)
+            return jsonify(status='error')
 
 
 @slack_adapter.on('message')
@@ -73,14 +80,16 @@ def message(payload):
     user_id = event.get('user')
     text = event.get('text')
 
-    if slack_bot_id != user_id:
-        if is_hate_spech(text):
-            slack_client.chat_postMessage(channel=channel_id,
-                                          text="Your message has been flagged as hate speech. Please refrain from using such language in the future.")
+    if slack_bot_id == user_id:
+        return
 
+    if hatey_predictor_singleton.is_hate_speech(text):
+        text = f"Hey <@{user_id}>! I think your message is hate speech " \
+               f"[{hatey_predictor_singleton.reasons(text)}]. " \
+               f"Please use more appropriate language."
+        log.info(f"Sending message to channel {channel_id}: {text}")
 
-def is_hate_spech(text):
-    return randint(1, 2) == 1
+        slack_client.chat_postMessage(channel=channel_id, text=text)
 
 
 @app.after_request
