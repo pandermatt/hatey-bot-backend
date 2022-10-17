@@ -1,5 +1,6 @@
 import numpy as np
 import seaborn as sns
+import stringcase
 from matplotlib import pyplot as plt
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -61,6 +62,8 @@ class EnsembleClassifier:
         if labels is not None:
             plt.xticks(np.arange(len(labels)), labels)
             plt.yticks(np.arange(len(labels)), labels)
-        plt.savefig(config.result_file('confusion_matrix.png'))
+        plt.savefig(
+            config.result_file(f'confusion_matrix_{stringcase.snakecase(self.classifier.__class__.__name__)}.png')
+        )
 
         return cm

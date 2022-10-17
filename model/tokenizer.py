@@ -9,13 +9,13 @@ class SpacyTokenizer:
         self.nlp = spacy.load("en_core_web_sm", disable=['parser', 'ner'])
 
     def tokenize(self, texts):
-        return [self._tokenize(text) for text in texts]
+        return np.array([self._tokenize(text) for text in texts])
 
     def _tokenize(self, text):
         return [token.lemma_ for token in self.nlp(text) if not token.is_stop and not token.is_punct]
 
 
-class NLTKTokenizer:
+class NltkTokenizer:
     def __init__(self, remove_repeted_ngrams=True):
         self.stemmer = PorterStemmer()
         self.lemmatizer = WordNetLemmatizer()

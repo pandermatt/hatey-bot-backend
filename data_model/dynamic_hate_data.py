@@ -12,4 +12,7 @@ class DynamicHateData(AbstractData):
         return self.data['text'].to_numpy()
 
     def get_label(self):
-        return np.array([1 if label == 'hate' else 0 for label in self.data['label']]).to_numpy()
+        return np.array([1 if label == 'hate' else 0 for label in self.data['label']])
+
+    def get_label_names(self):
+        return ['non-hate', 'hate']

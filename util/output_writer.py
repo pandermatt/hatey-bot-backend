@@ -7,7 +7,8 @@ class OutputWriter:
     """
 
     def __init__(self, filename):
-        self.file = open(config.result_file(filename), 'w')
+        self.path = config.result_file(filename)
+        self.file = open(self.path, 'w')
 
     def write(self, ids, Y):
         self.file.write('id,toxic,severe_toxic,obscene,threat,insult,identity_hate\n')

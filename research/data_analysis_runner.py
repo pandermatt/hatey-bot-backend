@@ -3,7 +3,7 @@ import numpy as np
 from data_analysis import word_cloud_generator
 from data_analysis.ngram_plotter import NgramPlotter
 from data_model.south_park_data import SouthParkData
-from model.tokenizer import NLTKTokenizer
+from model.tokenizer import NltkTokenizer
 
 if __name__ == '__main__':
     dataset = SouthParkData()
@@ -17,7 +17,7 @@ if __name__ == '__main__':
     classes = len(np.unique(Y))
     print(X.shape, Y.shape, classes)
 
-    tokenizer = NLTKTokenizer()
+    tokenizer = NltkTokenizer()
     X = tokenizer.tokenize(X)
 
     ngram_plotter = NgramPlotter(ngram_size=2)
