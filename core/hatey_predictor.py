@@ -29,9 +29,8 @@ class HateyPredictor:
 
     def _base_classifiers(self):
         return {
-            'BaggingClassifier': BaggingClassifier(base_estimator=ExtraTreesClassifier(),
-                                                   n_estimators=10, max_samples=0.5,
-                                                   max_features=0.5),
+            'BaggingClassifier': BaggingClassifier(base_estimator=RandomForestClassifier()),
+            'ExtraTreesClassifier': ExtraTreesClassifier(),
             'RandomForestClassifier': RandomForestClassifier(),
             'AdaBoostClassifier': AdaBoostClassifier(),
             'GradientBoostingClassifier': GradientBoostingClassifier()
