@@ -3,6 +3,7 @@ from sklearn.ensemble import BaggingClassifier, ExtraTreesClassifier, RandomFore
     GradientBoostingClassifier
 
 from core.model_trainer import generate_and_train_model
+from model.SentimentAnalyser import SentimentAnalyser
 from model.tokenizer import NltkTokenizer
 from model.toxicity_predictor_transformer import ToxicityPredictorTransformer
 from util.file_io import FileIo
@@ -19,6 +20,7 @@ class HateyPredictor:
         self.transformer_model = ToxicityPredictorTransformer()
         self.classifiers = {}
         self.tokenizer = NltkTokenizer()
+        self.sentiment_analyser = SentimentAnalyser()
 
         for name, classifier in self._base_classifiers().items():
             cached_model = FileIo.cached(f"train_{stringcase.snakecase(name)}.pkl",
@@ -58,11 +60,7 @@ class HateyPredictor:
         return result
 
     def sentiment(self, text):
-        return self.clean({
-            "negative": 0.5,
-            "neutral": 0.5,
-            "positive": 0.5
-        })
+        return self.clean(self.sentiment_analyser.predict(text))
 
     def is_hate_speech(self, text):
         return not self.transformer_model.is_sentence_clean(text)
