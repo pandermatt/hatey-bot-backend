@@ -11,6 +11,8 @@
 
 ## Development
 
+The swagger documentation is automatically generated and can be found at [api.hatey.monster](https://api.hatey.monster).
+
 ### Setup
 
 ```bash
