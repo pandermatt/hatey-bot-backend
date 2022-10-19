@@ -58,5 +58,5 @@ caddy start
 
 Create a slack app under https://api.slack.com/apps 
 
-You can find the ENV var SLACK_BOT_TOKEN at https://api.slack.com/apps -> [Your Slack App Name] -> OAuth & Permissions -> Bot User OAuth Token
-You can find the ENV var SLACK_SIGNING_SECRET at https://api.slack.com/apps -> [Your Slack App Name] -> Basic Information -> Signing Secret
+- You can find the ENV var SLACK_BOT_TOKEN at https://api.slack.com/apps -> [Your Slack App Name] -> OAuth & Permissions -> Bot User OAuth Token
+- You can find the ENV var SLACK_SIGNING_SECRET at https://api.slack.com/apps -> [Your Slack App Name] -> Basic Information -> Signing Secret
