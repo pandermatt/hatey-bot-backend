@@ -3,7 +3,7 @@ from sklearn.ensemble import BaggingClassifier, ExtraTreesClassifier, RandomFore
     GradientBoostingClassifier
 
 from core.model_trainer import generate_and_train_model
-from model.SentimentAnalyser import SentimentAnalyser
+from model.sentiment_analyser import SentimentAnalyser
 from model.tokenizer import NltkTokenizer
 from model.toxicity_predictor_transformer import ToxicityPredictorTransformer
 from util.file_io import FileIo
