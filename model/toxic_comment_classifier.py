@@ -22,10 +22,10 @@ class ToxicCommentClassifier:
             {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)],
              'weight_decay_rate': 0.0}
         ]
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     def train(self, optimizer, train_dataloader, val_dataloader=None, epochs=4, lr=2e-5, eps=1e-8):
         train_loss_set = []
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         optimizer = optimizer(self.optimizer_grouped_parameters, lr=lr, eps=eps)
 
         for _ in trange(epochs, desc="Epoch"):
