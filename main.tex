@@ -1,0 +1,61 @@
+\begin{itemize}
+    \item What model did I train? - Classifier, Transformer
+    \item Why did I choose this kind of model?
+\end{itemize}
+
+\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,title=Example]
+  I trained a linear regression model with scikit-learn.
+  I think this model is well-suited for a regression task and it is simple to interpret what the model learns.
+\end{tcolorbox}
+
+
+We trained several models and tested them on the \textit{Toxic Comment Classification Challenge}~\cite{jigsaw-toxic-comment-classification-challenge} dataset.
+The best performing model was the Transformer model, which we used as a baseline for our experiments.
+We then trained several ensemble classifiers on the same dataset and compared their performance.
+The best performing ensemble classifier was the ExtraTreesClassifier, which we used as our final model in combination with the Transformer model.
+The predictions of all models are displayed on the website, given an input comment.
+
+
+\paragraph{Transformer}
+For the task of segmentation analysis we used the pretrained transformer model \textit{cardiffnlp/twitter-roberta-base-sentiment} \cite{barbieri2020tweeteval}.
+The model was evaluated on the \textit{glue/sst2} dataset also known as Stanford Sentiment Treebank \cite{socher2013recursive}.
+ The Dataset consist of a two-way (positive/negative) human annotated sentiments for movie reviews. Although our model was trained
+ on tweets annotated with the labels \textit{positive}, \textit{negative} and \textit{neutral}, we decided to use the \textit{glue/sst2} dataset for evaluation,
+ to evaluate it also on larger text corpora. Without fine-tuning the model achieved an accuracy of 0.87 on the \textit{glue/sst2} dataset if we just
+ ignored the \textit{neutral} label and took the one with the next highest probability as the prediction.
+
+ % create a figure
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{figures/transformer.png}
+\caption{Transformer model}
+\label{fig:transformer}
+\end{figure}
+
+Transformer models are very powerful and can be used for many different tasks. We decided to use a additonal transformer model
+for the task of toxicity analysis. We used the pretrained model \textit{roberta-base} \cite{liu2019roberta}. We fine-tuned the model on the
+\textit{ConvAbuse} dataset \cite{cercas-curry-etal-2021-convabuse}. This dataset contains the labels ableism, homophobic,
+intellectual, racist, sexist, sex_harassment and transphobic.
+
+% create one figure containing two subfigures
+\begin{figure}[h]
+\begin{subfigure}[b]{0.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/transformer_toxicity.png}
+  \caption{Transformer model}
+  \label{fig:transformer_toxicity}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{figures/transformer_toxicity_confusion_matrix.png}
+  \caption{Confusion matrix}
+  \label{fig:transformer_toxicity_confusion_matrix}
+\end{subfigure}
+\caption{Transformer model for toxicity analysis}
+\label{fig:transformer_toxicity}
+\end{figure}
+
+
+\paragraph{Classifier}
+
+We used the BaggingClassifier, ExtraTreesClassifier, RandomForestClassifier, AdaBoostClassifier and GradientBoostingClassifier.
