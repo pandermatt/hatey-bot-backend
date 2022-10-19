@@ -27,3 +27,8 @@ class ToxicCommentData(AbstractData):
 
     def get_label_names(self):
         return ['non-toxic', 'toxicity', 'severe-toxicity', 'obscene', 'threat', 'insult', 'identity-attack']
+
+
+class ToxicCommentBalancedData(ToxicCommentData):
+    # generate this data set by running the oversampling.ipynb jupyter notebook
+    FILE_NAME = 'toxic_comment_balanced.csv'
