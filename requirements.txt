@@ -8,6 +8,7 @@ flask-httpauth
 flask-restx
 flask==2.1.2
 matplotlib
+imbalanced-learn
 nltk
 numpy
 pandas
