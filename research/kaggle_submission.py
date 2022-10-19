@@ -26,7 +26,7 @@ def plot_results():
     fig, ax = plt.subplots(figsize=(5, 5))
     ax.bar(x - width / 2, nltk, width, label='NLTK')
     ax.bar(x + width / 2, spacy, width, label='SpaCy')
-    ax.bar(x + width / 2, other, width, label='Embeddings')
+    ax.bar(x, other, width, label='Embeddings')
 
     ax.set_ylabel('Score')
     ax.set_title('Scores by model and tokenizer')
