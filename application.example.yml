@@ -1,8 +1,10 @@
-API_TOKEN: "1234567890"
-FRONTEND_URL: "https://hatey.monster" # or "http://localhost:3000"
+API_TOKEN: "1234567890" # This is the API token for the bot
+FRONTEND_URL: "https://hatey.monster" # or "http://localhost:3000" if you're running the frontend locally
 
 # Slack integration is disabled if this is empty
+# Check the README for instructions on how to get this
 SLACK_BOT_TOKEN: ""
 SLACK_SIGNING_SECRET: ""
 
+# If this is false, the bot will not generate files nor train the model
 CAN_GENERATE_FILES: "true"
