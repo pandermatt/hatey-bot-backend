@@ -24,11 +24,13 @@ class EnsembleClassifier:
         self.label_names = label_names
 
     def train(self, X, Y):
-        x_tfidf = self.tfidf_vectorizer.fit_transform(X)
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(x_tfidf, Y,
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X, Y,
                                                                                 test_size=0.2,
                                                                                 random_state=42,
                                                                                 stratify=Y)
+
+        self.X_train = self.tfidf_vectorizer.fit_transform(self.X_train)
+        self.X_test = self.tfidf_vectorizer.transform(self.X_test)
 
         self.classifier.fit(self.X_train, self.y_train)
 

@@ -11,6 +11,7 @@ from util.file_io import FileIo
 from util.output_writer import OutputWriter
 
 if __name__ == '__main__':
+    # https://www.kaggle.com/competitions/jigsaw-toxic-comment-classification-challenge
     tokenizers = [NltkTokenizer(), SpacyTokenizer()]
     test_csv = pd.read_csv(config.input_file('toxic_comment_verify.csv'))
     ids = test_csv['id']
