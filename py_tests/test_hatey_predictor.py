@@ -26,3 +26,13 @@ def test_predictions():
     assert float(predictions['Transformer']['Insult']) > 0.5
     assert float(predictions['BaggingClassifier']['Insult']) > 0.5
     assert float(predictions['RandomForestClassifier']['Insult']) > 0.5
+
+
+def test_sentiment():
+    sentiment = hatey_predictor_singleton.sentiment("You are an idiot")
+    assert float(sentiment['Negative']) > 0.5
+    assert float(sentiment['Positive']) < 0.5
+
+    sentiment = hatey_predictor_singleton.sentiment("You are a nice person")
+    assert float(sentiment['Negative']) < 0.5
+    assert float(sentiment['Positive']) > 0.5

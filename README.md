@@ -2,25 +2,72 @@
 
 ## Important Links
 
-- [Frontend GitHub](https://github.com/pandermatt/hatey-bot-frontend)
-- [Frontend hatey.monster](https://hatey.monster)
+- [Website hatey.monster](https://hatey.monster)
+- [Swagger Documentation api.hatey.monster](https://api.hatey.monster)
+- [Frontend GitHub](https://github.com/pandermatt/hatey-bot-frontend) [![React app deployement](https://github.com/pandermatt/hatey-bot-frontend/actions/workflows/deploy.yml/badge.svg)](https://github.com/pandermatt/hatey-bot-frontend/actions/workflows/deploy.yml)
 - [Backend GitHub](https://github.com/pandermatt/hatey-bot-backend)
-- [Backend api.hatey.monster](https://api.hatey.monster)
-- [Documentation](https://www.overleaf.com/project/633592679211c2009c8bce96)
+- [LaTeX Documentation](https://www.overleaf.com/project/633592679211c2009c8bce96)
 
 
 ## Development
+
+The swagger documentation is automatically generated and can be found at [api.hatey.monster](https://api.hatey.monster).
 
 ### Setup
 
 ```bash
 git clone git@github.com:pandermatt/hatey-bot-backend.git
 cd hatey-bot-backend
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Create application config
 cp application.example.yml application.yml
 ```
 
+#### Application config
+
+The application config is a YAML file that contains all the configuration for the application. 
+It is located at `application.yml` and is ignored by git. 
+The file `application.example.yml` contains all the possible configuration options with their default values.
+See [application.example.yml](application.example.yml) for more information.
+
+
+### Run
+
+- Run the Flask application with `python app.py`
+- Run the production server with `python waitress_server.py`
+
+If `CAN_GENERATE_FILES` in the application config is set to `True`, the application will generate all the AI models and files on startup.
+Thus, the first startup will take a while.
+All needed files will be generated in the [data](data) folder.
+The app downloads the data from several sources, like GitHub or HuggingFace.
+Pre-generated files are available in the [data/input](data/input) folder.
+
+
+### Tests
+
+- Run the tests with `python -m pytest py_tests/`
+
+
+### Research
+
+The [research](research) folder contains all the research and experiments that were done for this project.
+The filename describes the topic of the research and they can be run with `python filename.py` or with jupyter notebooks.
+
+## Slackbot Integration
+
+Create a new Slack App via [api.slack.com/apps](https://api.slack.com/apps) and click on <Your Slack App Name>
+
+- Find the ENV var `SLACK_BOT_TOKEN` under OAuth & Permissions $\rightarrow$ Bot User OAuth Access Token
+- Find the ENV var `SLACK_SIGNING_SECRET` under Basic Information $\rightarrow$ Signing Secret
+
+
 ## Server deployment
+
+Instructions for deploying the app on a server.
+We use [asdf](https://asdf-vm.com/#/) to manage the different versions of python and [caddy](https://caddyserver.com/) as a reverse proxy.
 
 ### Setup
 
@@ -53,3 +100,11 @@ sudo apt install caddy
 # start caddy
 caddy start
 ```
+
+
+
+## Contributors
+
+![](https://avatars.githubusercontent.com/u/20790833?s=64)
+![](https://avatars.githubusercontent.com/u/87606238?s=64)
+![](https://avatars.githubusercontent.com/u/15248306?s=64)
