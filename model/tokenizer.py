@@ -32,9 +32,9 @@ class NltkTokenizer:
 
     def _tokenize(self, text):
         words = word_tokenize(text)
-        words = [word for word in words if word.isalpha() and word not in self.stop_words]
-        words = [self.lemmatizer.lemmatize(word).lower() for word in words]
         if self.remove_repeated_ngrams:
             words = [word for i, word in enumerate(words) if i < 2 or (word != words[i - 2] and word != words[i - 1])]
+        words = [word for word in words if word.isalpha() and word not in self.stop_words]
+        words = [self.lemmatizer.lemmatize(word).lower() for word in words]
 
         return words
