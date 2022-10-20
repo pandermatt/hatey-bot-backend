@@ -56,16 +56,16 @@ class EnsembleClassifier:
         cm = confusion_matrix(self.y_test, self.classifier.predict(self.X_test))
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
 
-        # save confusion matrix as plot image
-        plt.figure(figsize=(10, 7))
-        sns.heatmap(cm, annot=True, fmt='.2f', cmap='Blues')
+        plt.figure(figsize=(10, 10))
+        sns.heatmap(cm, annot=True, fmt='.2f', xticklabels=labels, yticklabels=labels, cmap='Blues')
+        plt.ylabel('Actual')
         plt.xlabel('Predicted')
-        plt.ylabel('Truth')
-        if labels is not None:
-            plt.xticks(np.arange(len(labels)), labels)
-            plt.yticks(np.arange(len(labels)), labels)
+        class_name = self.classifier.__class__.__name__
+
+        plt.title(f"Confusion Matrix for {stringcase.titlecase(class_name)}")
         plt.savefig(
-            config.result_file(f'confusion_matrix_{stringcase.snakecase(self.classifier.__class__.__name__)}.png')
+            config.result_file(f'confusion_matrix_{stringcase.snakecase(class_name)}.pdf'),
+            bbox_inches='tight'
         )
 
         return cm

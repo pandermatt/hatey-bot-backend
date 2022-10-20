@@ -1,7 +1,7 @@
 import nltk
 import numpy as np
 import spacy
-from nltk import PorterStemmer, WordNetLemmatizer, word_tokenize
+from nltk import WordNetLemmatizer, word_tokenize
 from nltk.corpus import stopwords
 
 
@@ -23,7 +23,6 @@ class NltkTokenizer:
         nltk.download('punkt', quiet=True)
         nltk.download('omw-1.4', quiet=True)
 
-        self.stemmer = PorterStemmer()
         self.lemmatizer = WordNetLemmatizer()
         self.stop_words = set(stopwords.words('english'))
         self.remove_repeated_ngrams = remove_repeated_ngrams
