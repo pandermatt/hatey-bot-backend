@@ -8,6 +8,8 @@
 - [Backend GitHub](https://github.com/pandermatt/hatey-bot-backend)
 - [LaTeX Documentation](https://www.overleaf.com/project/633592679211c2009c8bce96)
 
+<img width="50%" src="https://user-images.githubusercontent.com/20790833/197025621-890eda34-d057-4acb-b685-ea8efaa06081.png">
+
 
 ## Development
 
