@@ -5,6 +5,7 @@ if __name__ == '__main__':
     # is_all_hate_negative?
     dataset = ToxicCommentData()
     label_names = dataset.get_label_names()
+    # To generate this file run research/is_all_hate_negative.py
     content = open(config.result_file('is_all_hate_negative.csv'), 'r').readlines()
     content = [line.strip().split(',') for line in content]
     content = [[int(line[0]), float(line[1]), float(line[2]), float(line[3])] for line in content]
