@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Hatey Bot",
   description: "Hate Speech Detection",
+  base: "/hatey-bot-backend/",
   themeConfig: {
     socialLinks: [
       { icon: 'github', link: 'https://github.com/pandermatt/hatey-bot-backend' },
