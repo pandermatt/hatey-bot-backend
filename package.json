@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "sass": "^1.70.0",
+    "vitepress": "^1.0.0-rc.41"
+  },
+  "scripts": {
+    "docs:dev": "vitepress dev homepage",
+    "docs:build": "vitepress build homepage",
+    "docs:preview": "vitepress preview homepage"
+  }
+}

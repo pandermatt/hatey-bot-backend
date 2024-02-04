@@ -136,3 +136,5 @@ data/cache
 .idea/*
 *.pt
 data/toxic/
+homepage/.vitepress/cache
+node_modules
