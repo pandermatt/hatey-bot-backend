@@ -2,7 +2,12 @@
     <div class="main-container vp-doc">
         <div class="info custom-block">
             <p class="custom-block-title">INFO</p>
-            <p>This project was created for the course <a href="https://studentservices.uzh.ch/uzh/anonym/vvz/?sap-language=EN&sap-ui-language=EN#/details/2022/003/SM/51079434">Essentials in Text and Speech Processing</a> at the University of Zurich (UZH).</p>
+            <p>
+                This project was developed as part of the <a
+                    href="https://studentservices.uzh.ch/uzh/anonym/vvz/?sap-language=EN&sap-ui-language=EN#/details/2022/003/SM/51079434">Essentials
+                    in Text and Speech Processing</a> course at the University of Zurich (UZH).
+                We received a grade of <b>6.0</b> 🥇, the highest grade in the Swiss grading system.
+            </p>
         </div>
 
         <img src="/webpage.png" alt="Webpage" />
