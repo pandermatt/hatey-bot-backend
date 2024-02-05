@@ -10,9 +10,44 @@
             </p>
         </div>
 
+
+        <p class="made-by">Made with ❤️ by</p>
+        <VPTeamMembers size="small" :members="members" />
+
         <img src="/webpage.png" alt="Webpage" />
     </div>
 </template>
+
+<script setup>
+import { VPTeamMembers } from 'vitepress/theme'
+
+const members = [
+    {
+        avatar: 'https://avatars.githubusercontent.com/u/20790833?v=4',
+        name: 'Pascal Andermatt',
+        links: [
+            { icon: 'github', link: 'https://github.com/pandermatt' },
+            { icon: 'linkedin', link: 'https://www.linkedin.com/in/pandermatt/' },
+        ]
+    },
+    {
+        avatar: 'https://avatars.githubusercontent.com/u/87606238?v=4',
+        name: 'Tobias Fankhauser',
+        links: [
+            { icon: 'github', link: 'https://github.com/TobiFank' },
+            { icon: 'linkedin', link: 'https://www.linkedin.com/in/tobias-fankhauser-b536a0b7/' },
+        ]
+    },
+    {
+        avatar: 'https://avatars.githubusercontent.com/u/15248306?v=4',
+        name: 'Denis Müller',
+        links: [
+            { icon: 'github', link: 'https://github.com/denis-mueller' },
+            { icon: 'linkedin', link: 'https://www.linkedin.com/in/denis-mueller/' },
+        ]
+    },
+]
+</script>
 
 <style scoped lang="scss">
 .main-container {
@@ -24,6 +59,12 @@
 
     .info {
         margin-bottom: 30px;
+    }
+
+    .made-by {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
     }
 }
 
@@ -44,6 +85,6 @@ img {
     max-width: 800px;
     width: 100%;
     border-radius: 8px;
-    margin: 0 auto 30px;
+    margin: 50px auto 0;
 }
 </style>
