@@ -4,15 +4,14 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Hatey Bot",
   description: "Hate Speech Detection",
-  base: "/hatey-bot-backend/",
+  base: "/hatey-bot/",
   themeConfig: {
     socialLinks: [
       { icon: 'github', link: 'https://github.com/pandermatt/hatey-bot-backend' },
     ],
-
     footer: {
-      message: "Made with ❤️ in Switzerland",
-      copyright: "Pascal, Tobias and Denis"
+      copyright: "<a href='https://pandermatt.ch' target='_blank'>Pascal Andermatt</a> | <a href='https://pandermatt.ch/privacy-policy' target='_blank'>Privacy Policy</a>",
+      message: "Made with ❤️ in Switzerland"
     }
   }
 })
